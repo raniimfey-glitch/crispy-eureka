@@ -1034,7 +1034,7 @@ function renderGrid(){
     var matchCat=currentCat==='all'||app.cat===currentCat;
     var hay=(app.name+' '+app.desc+' '+app.cat).toLowerCase();
     var matchSearch=!currentSearch||hay.includes(currentSearch);
-    var isPaid=!!(app.paid && app.paidPass);
+    var isPaid=!!(app.paid===true && app.paidPass && app.paidPass.trim()!=='');
     // فلتر مدفوع/مجاني
     if(currentPaidFilter==='paid' && !isPaid)return;
     if(currentPaidFilter==='free' && isPaid)return;
@@ -1392,6 +1392,16 @@ function editApp(i){
   setCatValue(app.cat);
   document.getElementById('fAge').value=app.age||'';
   document.getElementById('fIcon').value=app.icon||'';
+
+  // ── حقل مدفوع ──
+  var isPaid=!!(app.paid && app.paidPass);
+  var cbPaid=document.getElementById('fPaid');
+  var ppWrap=document.getElementById('paidPassWrap');
+  var ppInp=document.getElementById('fPaidPass');
+  if(cbPaid){cbPaid.checked=isPaid}
+  if(ppWrap){ppWrap.style.display=isPaid?'block':'none'}
+  if(ppInp){ppInp.value=app.paidPass||''}
+
   document.getElementById('formTitle').textContent='✏️ تعديل التطبيق';
   switchTab('form',document.querySelectorAll('.tab-btn')[1]);
 }
@@ -1403,33 +1413,55 @@ function saveApp(){
   var name=document.getElementById('fName').value.trim();
   var desc=document.getElementById('fDesc').value.trim();
   var url=document.getElementById('fUrl').value.trim();
-  var cat=resolveCat(); // ← يدعم التصنيف المخصص
+  var cat=resolveCat();
   var age=document.getElementById('fAge').value.trim();
   var icon=document.getElementById('fIcon').value.trim();
   var msg=document.getElementById('formMsg');
+
+  // ── قراءة حقل مدفوع ──
+  var cbPaid=document.getElementById('fPaid');
+  var ppInp=document.getElementById('fPaidPass');
+  var isPaid=!!(cbPaid && cbPaid.checked);
+  var paidPass=(ppInp ? ppInp.value.trim() : '');
+
+  // التحقق من الإلزامية
   if(!name||!desc||!cat||cat==='__new__'){
     msg.style.display='block';msg.style.color='#e53e3e';
     msg.textContent='⚠️ الاسم والوصف والتصنيف إلزامية';return;
   }
-  // تسجيل التصنيف الجديد إن وُجد
+  if(isPaid && !paidPass){
+    msg.style.display='block';msg.style.color='#e53e3e';
+    msg.textContent='⚠️ أدخلي كلمة السر للتطبيق المدفوع';return;
+  }
+
   registerCustomCat(cat);
   var apps=loadApps(),idx=parseInt(document.getElementById('editIndex').value);
-  var obj={name:name,desc:desc,url:url||'#',cat:cat,age:age,icon:icon||'📱'};
+
+  var obj={
+    name:name, desc:desc, url:url||'#',
+    cat:cat, age:age, icon:icon||'📱',
+    paid:isPaid,
+    paidPass:isPaid ? paidPass : ''
+  };
+
   if(idx>=0){apps[idx]=obj}else{apps.push(obj)}
   saveApps(apps);
-  rebuildFilterBar(); // ← يضيف التصنيف الجديد للفلاتر فوراً
+  rebuildFilterBar();
   renderAdminList();
   renderGrid();
   resetForm();
   msg.style.display='block';msg.style.color='var(--teal)';
-  msg.textContent='✅ تم الحفظ — التصنيف "'+cat+'" ظهر في القائمة';
+  msg.textContent='✅ تم الحفظ'+(isPaid?' — 💎 مدفوع':'— 🆓 مجاني');
   setTimeout(function(){msg.style.display='none'},2800);
 }
 function resetForm(){
-  ['editIndex','fName','fDesc','fUrl','fAge','fIcon'].forEach(function(id){
-    var el=document.getElementById(id);if(el)el.value=id==='editIndex'?'-1':'';
+  ['editIndex','fName','fDesc','fUrl','fAge','fIcon','fPaidPass'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.value=id==='editIndex'?'-1':'';
   });
   var fc=document.getElementById('fCat');if(fc)fc.value='';
+  var cb=document.getElementById('fPaid');if(cb)cb.checked=false;
+  var pw=document.getElementById('paidPassWrap');if(pw)pw.style.display='none';
   var cw=document.getElementById('customCatWrap');if(cw)cw.style.display='none';
   var cc=document.getElementById('fCatCustom');if(cc)cc.value='';
   var ch=document.getElementById('customCatHint');if(ch)ch.style.display='none';
