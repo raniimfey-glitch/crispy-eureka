@@ -1062,7 +1062,7 @@ function renderGrid(){
       if(isPaid && !isUnlocked){
         statusBtn='<button class="btn-status btn-paid-status" onclick="event.stopPropagation();openUnlock('+i+')">💎 مدفوع</button>';
       } else if(isPaid && isUnlocked){
-        statusBtn='<button class="btn-status btn-unlocked-status" onclick="event.stopPropagation();openPreview('+i+')">🔓 مفتوح</button>';
+        statusBtn='<button class="btn-status btn-unlocked-status" onclick="event.stopPropagation();openPreview('+i+')">💎 مدفوع</button>';
       } else {
         statusBtn='<button class="btn-status btn-free-status">🆓 مجاني</button>';
       }
