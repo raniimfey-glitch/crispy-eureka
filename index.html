@@ -1062,7 +1062,7 @@ function renderGrid(){
       if(isPaid && !isUnlocked){
         statusBtn='<button class="btn-status btn-paid-status" onclick="event.stopPropagation();openUnlock('+i+')">💎 مدفوع</button>';
       } else if(isPaid && isUnlocked){
-        statusBtn='<button class="btn-status btn-unlocked-status" onclick="event.stopPropagation();openPreview('+i+')">🔓 مفتوح</button>';
+        statusBtn='<button class="btn-status btn-unlocked-status" onclick="event.stopPropagation();openPreview('+i+')">💎 مدفوع</button>';
       } else {
         statusBtn='<button class="btn-status btn-free-status">🆓 مجاني</button>';
       }
@@ -1168,7 +1168,12 @@ function openUnlock(i){
   pendingUnlockIndex=i;
   document.getElementById('unlockAppName').textContent='📱 '+app.name;
   document.getElementById('unlockPass').value='';
+  document.getElementById('unlockPass').style.borderColor='';
   document.getElementById('unlockErr').style.display='none';
+
+  // تشخيص مؤقت: أظهر كلمة السر المخزنة في console
+  console.log('[Unlock Debug] app index:'+i+' paid:'+app.paid+' paidPass:"'+app.paidPass+'"');
+
   document.getElementById('unlockOverlay').style.display='block';
   document.body.style.overflow='hidden';
   setTimeout(function(){document.getElementById('unlockPass').focus()},300);
@@ -1176,24 +1181,41 @@ function openUnlock(i){
 function tryUnlock(){
   var apps=loadApps();
   var app=apps[pendingUnlockIndex];
-  var entered=document.getElementById('unlockPass').value;
-  if(!app||!app.paidPass){closeUnlock();return}
-  if(entered===app.paidPass){
-    // حفظ الفتح في localStorage
+  var entered=document.getElementById('unlockPass').value.trim();
+
+  // تحقق أن التطبيق موجود وله كلمة سر
+  if(!app){closeUnlock();return}
+
+  // إذا لم توجد كلمة سر مخزنة — افتح مباشرة
+  if(!app.paidPass || app.paidPass.trim()===''){
     var unlocked=loadUnlocked();
     unlocked[pendingUnlockIndex]=true;
     saveUnlocked(unlocked);
     closeUnlock();
-    // فتح التطبيق مباشرة
+    openPreview(pendingUnlockIndex);
+    renderGrid();
+    return;
+  }
+
+  var stored=app.paidPass.trim();
+
+  if(entered===stored){
+    var unlocked=loadUnlocked();
+    unlocked[pendingUnlockIndex]=true;
+    saveUnlocked(unlocked);
+    closeUnlock();
     openPreview(pendingUnlockIndex);
     renderGrid();
   } else {
     var err=document.getElementById('unlockErr');
+    // عرض الخطأ مع معلومة تشخيصية مخفية في console
+    console.log('[Unlock] entered:"'+entered+'" stored:"'+stored+'" match:'+(entered===stored));
     err.style.display='block';
-    document.getElementById('unlockPass').classList.add('inp-err');
+    err.textContent='❌ كلمة السر غير صحيحة';
+    document.getElementById('unlockPass').style.borderColor='#e53e3e';
     setTimeout(function(){
       err.style.display='none';
-      document.getElementById('unlockPass').classList.remove('inp-err');
+      document.getElementById('unlockPass').style.borderColor='';
     },2500);
   }
 }
@@ -1418,13 +1440,31 @@ function saveApp(){
   var icon=document.getElementById('fIcon').value.trim();
   var msg=document.getElementById('formMsg');
 
-  // ── قراءة حقل مدفوع ──
+  // ── قراءة حقل مدفوع — نقرأ قبل أي تعديل على DOM ──
   var cbPaid=document.getElementById('fPaid');
+  var ppWrap=document.getElementById('paidPassWrap');
   var ppInp=document.getElementById('fPaidPass');
-  var isPaid=!!(cbPaid && cbPaid.checked);
-  var paidPass=(ppInp ? ppInp.value.trim() : '');
 
-  // التحقق من الإلزامية
+  // تأكد من إظهار الحقل مؤقتاً لقراءة قيمته
+  var wasHidden=false;
+  if(ppWrap && ppWrap.style.display==='none'){
+    wasHidden=true;
+    ppWrap.style.display='block';
+  }
+
+  var isPaid=!!(cbPaid && cbPaid.checked);
+  var paidPass=ppInp ? ppInp.value : '';
+  paidPass=paidPass.trim();
+
+  // أعد الإخفاء إن لم يكن مدفوعاً
+  if(wasHidden && !isPaid && ppWrap){
+    ppWrap.style.display='none';
+  }
+
+  // تشخيص
+  console.log('[saveApp] isPaid:'+isPaid+' paidPass:"'+paidPass+'" checkbox:'+(cbPaid?cbPaid.checked:'NULL'));
+
+  // التحقق
   if(!name||!desc||!cat||cat==='__new__'){
     msg.style.display='block';msg.style.color='#e53e3e';
     msg.textContent='⚠️ الاسم والوصف والتصنيف إلزامية';return;
@@ -1435,23 +1475,35 @@ function saveApp(){
   }
 
   registerCustomCat(cat);
-  var apps=loadApps(),idx=parseInt(document.getElementById('editIndex').value);
+  var apps=loadApps();
+  var idx=parseInt(document.getElementById('editIndex').value);
 
   var obj={
-    name:name, desc:desc, url:url||'#',
-    cat:cat, age:age, icon:icon||'📱',
+    name:name,
+    desc:desc,
+    url:url||'#',
+    cat:cat,
+    age:age,
+    icon:icon||'📱',
     paid:isPaid,
     paidPass:isPaid ? paidPass : ''
   };
 
+  console.log('[saveApp] saving obj:',JSON.stringify(obj));
+
   if(idx>=0){apps[idx]=obj}else{apps.push(obj)}
   saveApps(apps);
+
+  // تحقق فوري من التخزين
+  var check=loadApps()[idx>=0?idx:apps.length-1];
+  console.log('[saveApp] verified from storage — paid:'+check.paid+' paidPass:"'+check.paidPass+'"');
+
   rebuildFilterBar();
   renderAdminList();
   renderGrid();
   resetForm();
   msg.style.display='block';msg.style.color='var(--teal)';
-  msg.textContent='✅ تم الحفظ'+(isPaid?' — 💎 مدفوع':'— 🆓 مجاني');
+  msg.textContent='✅ تم الحفظ — '+(isPaid?'💎 مدفوع':'🆓 مجاني');
   setTimeout(function(){msg.style.display='none'},2800);
 }
 function resetForm(){
