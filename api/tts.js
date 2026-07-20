@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'النص مطلوب' });
   }
 
-  const VOICE_ID = voice_id || 'cgSgspJ2msm6clMCkdW9';
+  const VOICE_ID = voice_id || 'XdoLPWNt7ytn6BtU4FBf';
 
   try {
     const response = await fetch(
