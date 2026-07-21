@@ -1,0 +1,108 @@
+{
+  "apps": [
+    {
+      "title": "عالم الاختراعات",
+      "category": "علوم",
+      "description": "تطبيق تفاعلي يعرف المتعلمين بأبرز الاختراعات البشرية وأثرها.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fspecial-fishstick",
+      "isProtected": false
+    },
+    {
+      "title": "مغامرة الحيوانات",
+      "category": "علوم",
+      "description": "تطبيق تفاعلي ممتع لاكتشاف عالم الحيوانات وبيئاتها.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fcuddly-octo-adventure",
+      "isProtected": false
+    },
+    {
+      "title": "الجهاز التنفسي",
+      "category": "علوم",
+      "description": "شرح تفاعلي لمكونات ووظائف الجهاز التنفسي للإنسان.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Freimagined-lamp",
+      "isProtected": false
+    },
+    {
+      "title": "تعلم الضرب",
+      "category": "رياضيات",
+      "description": "تمارين وألعاب تفاعلية لترسيخ جدول الضرب وتسهيل حفظه.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fsolid-palm-tree",
+      "isProtected": false
+    },
+    {
+      "title": "تعلم العد",
+      "category": "رياضيات",
+      "description": "تطبيق مبسط لتعلم العد والأرقام للأطفال وصغار المتعلمين.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects/bookish-guide",
+      "isProtected": false
+    },
+    {
+      "title": "كسور السنة الخامسة والرابعة",
+      "category": "رياضيات",
+      "description": "تمارين تطبيقية مبسطة لفهم الكسور ومقارنتها وفق المنهج الجزائري.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fliterate-goggles",
+      "isProtected": false
+    },
+    {
+      "title": "Math.quiz",
+      "category": "رياضيات",
+      "description": "اختبارات رياضية تفاعلية وسريعة لتنشيط الذاكرة والحساب الذهني.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fspecial-memory",
+      "isProtected": false
+    },
+    {
+      "title": "تعلم الاعداد",
+      "category": "رياضيات",
+      "description": "تدريبات على كتابة وقراءة الأعداد وترتيبها.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?hl=en-IN&repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fideal-pancake",
+      "isProtected": false
+    },
+    {
+      "title": "تحدي الهمزة",
+      "category": "لغة عربية",
+      "description": "تطبيق تفاعلي لتدريب المتعلمين على قواعد كتابة الهمزة بطريقة ممتعة.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?hl=en-IN&repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fglowing-computing-machine",
+      "isProtected": false
+    },
+    {
+      "title": "النجمة الصغيرة تتعلم الحروف",
+      "category": "لغة عربية",
+      "description": "تطبيق تفاعلي لتعلم الحروف الهجائية وأشكالها للأطفال.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?hl=en-IN&repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fpsychic-umbrella",
+      "isProtected": false
+    },
+    {
+      "title": "تعلم الحروف",
+      "category": "لغة عربية",
+      "description": "تطبيق شامل لتعلم حروف الهجاء مع الكلمات والأمثلة.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?hl=en-IN&repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fsuper-duper-lamp",
+      "isProtected": false
+    },
+    {
+      "title": "تركيب الكلمات",
+      "category": "لغة عربية",
+      "description": "تمرين تفاعلي لمساعدة المتعلم على دمج الحروف لتكوين كلمات صحيحة.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fprobable-journey",
+      "isProtected": false
+    },
+    {
+      "title": "تعلم الحروف بمواضعها وحركاتها",
+      "category": "لغة عربية",
+      "description": "دراسة تفصيلية لحروف الهجاء في أول، وسط، وآخر الكلمة مع الحركات القصيرة والطويلة.",
+      "url": "https://vercel.com/raniimfey-glitchs-projects?repo=https%3A%2F%2Fgithub.com%2Franiimfey-glitch%2Fideal-memory",
+      "isProtected": false
+    },
+    {
+      "title": "من أنا ؟",
+      "category": "ألعاب",
+      "description": "تطبيق تفاعلي تعليمي لتخمين المعلومات وتنمية الذكاء.",
+      "url": "#",
+      "isProtected": false
+    }
+  ],
+  "categories": [
+    "لغة عربية",
+    "رياضيات",
+    "علوم",
+    "ألعاب"
+  ]
+}
